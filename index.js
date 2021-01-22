@@ -120,14 +120,14 @@ const users = [
 app.get('/api/users', (req, res) => res.send(users));
 
 app.post('/api/users', (req, res) => {
-  ++id;
-
   const {
     displayImage,
     name,
     email,
     mobile,
   } = req.body;
+
+  ++id;
 
   users.push({
     id,
@@ -139,6 +139,24 @@ app.post('/api/users', (req, res) => {
 
   res.status(201)
      .send(users[id - 1]);
+});
+
+app.put('/api/users/:id', (req, res) => {
+  const user = users.find(o => o.id === parseInt(req.params.id));
+
+  const {
+    displayImage,
+    name,
+    email,
+    mobile,
+  } = req.body;
+
+  user['displayImage'] = displayImage;
+  user['name'] = name;
+  user['email'] = email;
+  user['mobile'] = mobile;
+
+  res.send(user);
 });
 
 app.listen(4000, () => console.log('Listening to port 4000.'));
