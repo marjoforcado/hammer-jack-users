@@ -1,9 +1,13 @@
 const express = require('express');
 const cors = require('cors');
+const bodyParser = require('body-parser');
 
 const app = express();
 
+app.use(bodyParser.json());
 app.use(cors());
+
+let id = 15;
 
 const users = [
   {
@@ -114,5 +118,27 @@ const users = [
 ];
 
 app.get('/api/users', (req, res) => res.send(users));
+
+app.post('/api/users', (req, res) => {
+  ++id;
+
+  const {
+    displayImage,
+    name,
+    email,
+    mobile,
+  } = req.body;
+
+  users.push({
+    id,
+    displayImage,
+    name,
+    email,
+    mobile,
+  });
+
+  res.status(201)
+     .send(users[id - 1]);
+});
 
 app.listen(4000, () => console.log('Listening to port 4000.'));
